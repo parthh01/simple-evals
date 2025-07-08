@@ -5,7 +5,7 @@ from . import common
 from .browsecomp_eval import BrowseCompEval
 from .drop_eval import DropEval
 from .gpqa_eval import GPQAEval
-from .humaneval_eval import HumanEval
+#from .humaneval_eval import HumanEval
 from .math_eval import MathEval
 from .mgsm_eval import MGSMEval
 from .mmlu_eval import MMLUEval
@@ -18,6 +18,7 @@ from .sampler.chat_completion_sampler import (
 from .sampler.o_chat_completion_sampler import OChatCompletionSampler
 from .sampler.claude_sampler import ClaudeCompletionSampler, CLAUDE_SYSTEM_MESSAGE_LMSYS
 
+from .sampler.critique_sampler import CritiqueSampler
 
 def main():
     parser = argparse.ArgumentParser(
@@ -110,6 +111,7 @@ def main():
             model="claude-3-opus-20240229",
             system_message=CLAUDE_SYSTEM_MESSAGE_LMSYS,
         ),
+	"critique": CritiqueSampler()
     }
 
     if args.list_models:
@@ -153,8 +155,8 @@ def main():
                     num_examples=10 if debug_mode else num_examples,
                     train_samples_per_prompt=3,
                 )
-            case "humaneval":
-                return HumanEval(num_examples=10 if debug_mode else num_examples)
+            #case "humaneval":
+            #    return HumanEval(num_examples=10 if debug_mode else num_examples)
             case "simpleqa":
                 return SimpleQAEval(
                     grader_model=grading_sampler,
@@ -170,7 +172,7 @@ def main():
 
     evals = {
         eval_name: get_evals(eval_name, args.debug)
-        for eval_name in ["simpleqa", "mmlu", "math", "gpqa", "mgsm", "drop", "humaneval", "browsecomp"]
+        for eval_name in ["simpleqa"] #,"mmlu", "math", "gpqa", "mgsm", "drop", "humaneval", "browsecomp"]
     }
     print(evals)
     debug_suffix = "_DEBUG" if args.debug else ""
