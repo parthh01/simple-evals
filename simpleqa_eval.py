@@ -131,6 +131,8 @@ class SimpleQAEval(Eval):
                     sampler._pack_message(content=row.get("problem", ""), role="user")
                 ]
                 sampler_response = sampler(prompt_messages)
+                if type(sampler_response) == str:
+                     print(f"Sampler response is a string: {sampler_response}")
                 response_text = sampler_response.response_text
                 actual_queried_prompt_messages = sampler_response.actual_queried_message_list
                 grade_letter = self.grade_sample(row.get("problem", ""), row.get("answer", ""), response_text)
